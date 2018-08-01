@@ -51,6 +51,13 @@ export class App extends Component {
                 <Tweets
                     tweets={this.props.tweets}
                     username={this.props.username}
+                    sortByDateAsc={this.props.sortByDateAsc}
+                    sortByDateDesc={this.props.sortByDateDesc}
+                    sortByStarsAsc={this.props.sortByStarsAsc}
+                    sortByStarsDesc={this.props.sortByStarsDesc}
+                    sumOfAllLikes={this.props.sumOfAllLikes}
+                    averageLikes={this.props.averageLikes}
+                    mentions={this.props.mentions}
                 />
             );
             loadMoreBtn = (
@@ -112,7 +119,10 @@ const mapStateToProps = state => {
         tweets: state.tweets,
         error: state.error,
         errorOccured: state.errorOccured,
-        loading: state.loading
+        loading: state.loading,
+        sumOfAllLikes: state.sumOfAllLikes,
+        averageLikes: state.averageLikes,
+        mentions: state.mentions
     };
 };
 
@@ -121,7 +131,11 @@ const mapDispatchToProps = dispatch => {
         onGetUserTweets: username => dispatch(actions.getUserTweets(username)),
         onLoadMoreTweets: (username, tweets) =>
             dispatch(actions.loadMoreTweets(username, tweets)),
-        onResetError: () => dispatch(actions.resetError())
+        onResetError: () => dispatch(actions.resetError()),
+        sortByDateAsc: () => dispatch(actions.sortByDateAsc()),
+        sortByDateDesc: () => dispatch(actions.sortByDateDesc()),
+        sortByStarsAsc: () => dispatch(actions.sortByStarsAsc()),
+        sortByStarsDesc: () => dispatch(actions.sortByStarsDesc()),
     };
 };
 

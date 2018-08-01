@@ -8,7 +8,10 @@ const initialState = {
     tweets: '',
     error: null,
     errorOccured: false,
-    loading: false
+    loading: false,
+    sumOfAllLikes: 0,
+    averageLikes: 0,
+    mentions: {}
 };
 
 const getUserTweetsStart = state => {
@@ -16,12 +19,26 @@ const getUserTweetsStart = state => {
 };
 
 const getUserTweetsSuccess = (state, action) => {
+    const sum = _.sumBy(action.userTweets, 'favorite_count');
+    const averageLikes = sum/action.userTweets.length;
+    let mentions = [];
+    _.forEach(action.userTweets, (val) => {
+        if(val.entities && val.entities.user_mentions.length > 0 ) {
+            _.forEach(val.entities.user_mentions, (mention) => {
+                mentions.push(mention.screen_name);
+            })
+        }
+    });
+
     return updateObject(state, {
         username: action.twitterUsername,
         tweets: action.userTweets,
         error: null,
         errorOccured: false,
-        loading: false
+        loading: false,
+        sumOfAllLikes: sum,
+        averageLikes: averageLikes,
+        mentions: _.groupBy(mentions)
     });
 };
 
@@ -61,8 +78,46 @@ const resetError = (state) => {
     });
 };
 
-const sortBy = (state, action) => {
-    return _.sortBy(state, action.key)
+const ascSortBy = (state, key) => {
+    const tweets = _.sortBy(state.tweets, key);
+    return updateObject(state, {
+        tweets: tweets,
+        error: null,
+        errorOccured: false,
+        loading: false
+    });
+}
+
+const descSortBy = (state, key) => {
+    const tweets = _.sortBy(state.tweets, key).reverse();
+    return updateObject(state, {
+        tweets: tweets,
+        error: null,
+        errorOccured: false,
+        loading: false
+    });
+}
+
+const ascSortByDate = (state, key) => {
+    const tweets = _.sortBy(state.tweets, (val) =>  new Date(val[key]) );
+
+    return updateObject(state, {
+        tweets: tweets,
+        error: null,
+        errorOccured: false,
+        loading: false
+    });
+}
+
+const descSortByDate = (state, key) => {
+    const tweets = _.sortBy(state.tweets, (val) =>  new Date(val[key]) );
+
+    return updateObject(state, {
+        tweets: tweets.reverse(),
+        error: null,
+        errorOccured: false,
+        loading: false
+    });
 }
 
 const reducer = (state = initialState, action) => {
@@ -81,8 +136,14 @@ const reducer = (state = initialState, action) => {
             return loadMoreTweetsFailed(state, action);
         case actionTypes.RESET_ERROR:
             return resetError(state);
-        case actionTypes.SORT_BY:
-            return sortBy(state, action)
+        case actionTypes.SORT_BY_DATE_ASCENDING:
+            return ascSortByDate(state, 'created_at');
+        case actionTypes.SORT_BY_DATE_DESCENDING:
+            return descSortByDate(state, 'created_at');
+        case actionTypes.SORT_BY_STARS_ASCENDING:
+            return ascSortBy(state, 'favorite_count');
+        case actionTypes.SORT_BY_STARS_DESCENDING:
+            return descSortBy(state, 'favorite_count');
         default:
             return state;
     }

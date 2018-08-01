@@ -60,3 +60,27 @@ export const resetError = () => {
         type: actionTypes.RESET_ERROR
     };
 };
+
+export const sortByDateAsc = () => {
+    return {
+        type: actionTypes.SORT_BY_DATE_ASCENDING
+    }
+}
+
+export const sortByDateDesc = () => {
+    return {
+        type: actionTypes.SORT_BY_DATE_DESCENDING
+    }
+}
+
+export const sortByStarsAsc = () => {
+    return {
+        type: actionTypes.SORT_BY_STARS_ASCENDING
+    }
+}
+
+export const sortByStarsDesc = () => {
+    return {
+        type: actionTypes.SORT_BY_STARS_DESCENDING
+    }
+}

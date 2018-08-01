@@ -22,7 +22,7 @@ const tweet = props => {
     }
     const year = props.data.split(' ').pop();
     const data = props.data.split(' ').splice(0, 3);
-    const formattedData = data.concat(year).join(' ');
+    const formattedData = data.concat(year).join(' ') + ', stars: ' + props.favorite_count;
 
     return (
         <div>
@@ -43,6 +43,7 @@ const tweet = props => {
                         {text}
                     </Typography>
                 </CardContent>
+
             </Card>
         </div>
     );

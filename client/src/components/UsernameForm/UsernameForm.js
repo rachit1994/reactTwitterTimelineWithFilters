@@ -13,7 +13,7 @@ const usernameForm = props => {
                     error={props.error}
                     id="name"
                     label="Your Username:"
-                    placeholder="@keen_ethics"
+                    placeholder="@iamsrk"
                     onChange={props.inputHandler}
                 />
                 <p className={classes.Form__p}>

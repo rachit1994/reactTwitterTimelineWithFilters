@@ -7,5 +7,9 @@ export {
     loadMoreTweetsSuccess,
     loadMoreTweetsFailed,
     loadMoreTweets,
-    resetError
+    resetError,
+    sortByDateAsc,
+    sortByDateDesc,
+    sortByStarsAsc,
+    sortByStarsDesc
 } from './app';
